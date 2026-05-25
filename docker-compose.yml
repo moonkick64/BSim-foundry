@@ -1,0 +1,46 @@
+services:
+  bsim_postgres:
+    image: ghcr.io/quarkslab/sighthouse/ghidra-bsim-postgres:1.0.3
+    container_name: bsim-foundry-postgres
+    hostname: bsim_postgres
+    volumes:
+      - ./data/postgres:/home/user/ghidra-data
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "/ghidra/Ghidra/Features/BSim/support/pg_is_ready.sh || exit 1"]
+      retries: 5
+      interval: 30s
+      timeout: 5s
+    networks:
+      - bsim-net
+
+  create_bsim_db:
+    image: ghcr.io/quarkslab/sighthouse/create_bsim_db:1.0.3
+    container_name: bsim-foundry-create-db
+    command: 'user "" bsim_postgres postgresql 5432'
+    depends_on:
+      bsim_postgres:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - bsim-net
+
+  ghidra:
+    image: ghcr.io/quarkslab/sighthouse/ghidraheadless:1.0.3
+    container_name: bsim-foundry-ghidra
+    entrypoint: ["sleep", "infinity"]
+    volumes:
+      - ./work:/work
+      # Path to the SCA-Benchmark artifacts tree (static .a archives). Override
+      # via SCA_ARTIFACTS in a .env file or the environment; defaults to a
+      # sibling checkout of SCA-Benchmark.
+      - ${SCA_ARTIFACTS:-../SCA-Benchmark/artifacts}:/artifacts:ro
+      - ./sighthouse/sighthouse-pipeline/src/sighthouse/pipeline/core_modules/GhidraAnalyzer/ghidrascripts:/scripts:ro
+    networks:
+      - bsim-net
+
+networks:
+  bsim-net:
+    driver: bridge

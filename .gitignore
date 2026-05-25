@@ -1,0 +1,27 @@
+# External dependencies (cloned by bootstrap)
+/sighthouse/
+
+# Docker runtime data (BSIM postgres)
+/data/
+
+# Work tree — entirely scratch/regenerated (extracted .o, ghidra projects,
+# logs, configs, the bootstrap-copied analyzer script, staging dumps).
+# bootstrap.sh + ingest.py recreate everything here.
+/work/
+
+# Generated signature corpus — distributed via GitHub Releases, not git.
+# Regenerate with ./scripts/dump-signatures.sh, package with
+# ./scripts/package-signatures.sh.
+/signatures/
+/signatures.tar.gz
+
+# Python / editor / OS noise
+__pycache__/
+*.pyc
+.venv/
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+nohup.out
