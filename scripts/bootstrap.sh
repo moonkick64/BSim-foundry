@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Bootstrap bsim-foundry: clone sighthouse, bring up docker compose,
+# Bootstrap bsim-foundry-sighthouse: clone sighthouse, bring up docker compose,
 # compile SightHouseAnalyzerScript inside the Ghidra container.
 set -euo pipefail
 

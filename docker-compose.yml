@@ -41,6 +41,56 @@ services:
     networks:
       - bsim-net
 
+  # ---- SightHouse frontend stack (for IDA / Binary Ninja / Ghidra clients) ----
+
+  redis:
+    image: redis:7
+    container_name: bsim-foundry-redis
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - bsim-net
+
+  sighthouse_create_user:
+    image: ghcr.io/quarkslab/sighthouse/sighthouse-frontend:1.0.3
+    container_name: bsim-foundry-sighthouse-create-user
+    # Image ships a wrapper at /entrypoint.sh that calls `sighthouse package
+    # run`; bypass it and invoke the real binary directly.
+    entrypoint: /home/user/.local/bin/sighthouse
+    # One-shot: creates the initial login on the frontend's own metadata DB.
+    # Note: `-d` belongs to the `frontend` parser, so it must precede the
+    # `add-user` subcommand. Change <user>/<password> before running in any
+    # non-local context.
+    command: frontend -d sqlite:////data/frontend.db add-user user -p password
+    restart: "no"
+    volumes:
+      - ./data/frontend:/data
+    depends_on:
+      bsim_postgres:
+        condition: service_healthy
+    networks:
+      - bsim-net
+
+  sighthouse_frontend:
+    image: ghcr.io/quarkslab/sighthouse/sighthouse-frontend:1.0.3
+    container_name: bsim-foundry-sighthouse-frontend
+    entrypoint: /home/user/.local/bin/sighthouse
+    command: >
+      frontend -g /ghidra -d sqlite:////data/frontend.db
+      -r local://data start
+      -w redis://redis:6379/0
+      -b postgresql://user@bsim_postgres:5432/bsim
+    ports:
+      - "127.0.0.1:6669:6671"
+    volumes:
+      - ./data/frontend:/data
+    depends_on:
+      - sighthouse_create_user
+      - bsim_postgres
+      - redis
+    networks:
+      - bsim-net
+
 networks:
   bsim-net:
     driver: bridge

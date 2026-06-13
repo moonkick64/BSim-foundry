@@ -13,7 +13,7 @@
 # Regenerate with ./scripts/dump-signatures.sh, package with
 # ./scripts/package-signatures.sh.
 /signatures/
-/signatures.tar.gz
+/signatures*.tar.gz
 
 # Python / editor / OS noise
 __pycache__/
