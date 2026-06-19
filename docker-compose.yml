@@ -53,7 +53,7 @@ services:
 
   sighthouse_create_user:
     image: ghcr.io/quarkslab/sighthouse/sighthouse-frontend:1.0.3
-    container_name: bsim-foundry-sighthouse-create-user
+    container_name: bsim-foundry-create-user
     # Image ships a wrapper at /entrypoint.sh that calls `sighthouse package
     # run`; bypass it and invoke the real binary directly.
     entrypoint: /home/user/.local/bin/sighthouse
@@ -73,7 +73,7 @@ services:
 
   sighthouse_frontend:
     image: ghcr.io/quarkslab/sighthouse/sighthouse-frontend:1.0.3
-    container_name: bsim-foundry-sighthouse-frontend
+    container_name: bsim-foundry-frontend
     entrypoint: /home/user/.local/bin/sighthouse
     command: >
       frontend -g /ghidra -d sqlite:////data/frontend.db

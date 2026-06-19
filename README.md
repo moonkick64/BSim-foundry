@@ -1,4 +1,4 @@
-# bsim-foundry-sighthouse
+# BSim-foundry
 
 An experiment in building a binary similarity signature corpus for common OSS
 C/C++ libraries, using [Quarkslab/SightHouse](https://github.com/quarkslab/sighthouse)
@@ -34,14 +34,24 @@ tar xzf signatures-v1.0.0.tar.gz
 ./scripts/restore-signatures.sh
 ```
 
-At this point `bsim_postgres` is populated. From there:
+At this point `bsim_postgres` is populated. To detect library functions in an
+unknown binary, you have three options — headless scripts, the Ghidra GUI, or the
+SightHouse plugins:
 
-- **Ghidra GUI**: add `postgresql://user@localhost:5432/bsim` as a Postgres
-  BSim Server (BSim menu in the Project Manager), then in the CodeBrowser use
-  `BSim → Search Functions`.
-- **Via SightHouse (IDA / Binary Ninja / Ghidra plugins)**: you also need to
-  run SightHouse's frontend. See
-  `sighthouse/doc/docs/frontend/quickstart.md`.
+```bash
+# Headless: identify embedded libraries, or rename functions in-place.
+export GHIDRA_INSTALL_DIR=/opt/ghidra
+./scripts/identify.sh ./suspect.bin              # read-only report
+MODE=rename ./scripts/identify.sh ./suspect.bin  # auto-rename + evidence comments
+```
+
+See **[USAGE.md](USAGE.md)** for all three paths, threshold tuning, and how to
+read the results.
+
+> ⚠️ This is a **signature-only** corpus, so Ghidra's native **Apply Name /
+> Apply Signature** buttons error out (they need the matched source program,
+> which isn't stored). Use the GUI for search/identification only, or the
+> `BSimRename` script / SightHouse plugin to apply names. See USAGE.md.
 
 ## Building / extending the corpus
 

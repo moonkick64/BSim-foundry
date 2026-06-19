@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-bsim-foundry-sighthouse ingestion script.
+BSim-foundry ingestion script.
 
 For each (library, arch), extracts .o files from the static archive built by
 SCA-Benchmark/scripts/builder.py, then runs Ghidra headless inside the

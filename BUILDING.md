@@ -1,6 +1,6 @@
 # Building / extending the corpus
 
-This document covers how bsim-foundry-sighthouse **produces** the BSIM signature corpus.
+This document covers how BSim-foundry **produces** the BSIM signature corpus.
 You only need it to regenerate signatures or to add libraries, architectures,
 or optimization levels. To simply *use* an existing corpus from your
 disassembler, see [README.md](README.md).
@@ -178,7 +178,7 @@ re-dump, which would bloat git history. Ship it as a **GitHub Release asset**:
 
 # Publish (requires gh + push access)
 gh release create v1.1.0 signatures-v1.1.0.tar.gz \
-  -t 'bsim-foundry-sighthouse v1.1.0' -n 'O0 + O2 corpus, x86_64 + arm64'
+  -t 'BSim-foundry v1.1.0' -n 'O0 + O2 corpus, x86_64 + arm64'
 ```
 
 ## Notes / known limitations

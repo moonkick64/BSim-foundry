@@ -15,6 +15,9 @@
 /signatures/
 /signatures*.tar.gz
 
+# Consumer output — Ghidra projects created by scripts/identify.sh.
+/bsim-out/
+
 # Python / editor / OS noise
 __pycache__/
 *.pyc
