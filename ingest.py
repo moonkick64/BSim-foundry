@@ -72,7 +72,7 @@ OPT_LEVELS = ["O0", "O1", "O2", "O3", "Os", "Oz"]
 def opt_suffix(opt: str) -> str:
     """Suffix appended to the BSim exe metadata / project dir.
 
-    O0 keeps the historical empty suffix so the existing -O0 corpus stays
+    O0 keeps the historical empty suffix so the existing -O0 signatures stay
     addressable as e.g. `zlib@1.3.1-x86_64`. Other opt levels get an explicit
     `-O2` tail.
     """

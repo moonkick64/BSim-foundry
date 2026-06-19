@@ -1,8 +1,8 @@
-# Building / extending the corpus
+# Building / extending the signatures
 
-This document covers how BSim-foundry **produces** the BSim signature corpus.
+This document covers how BSim-foundry **produces** the BSim signatures.
 You only need it to regenerate signatures or to add libraries, architectures,
-or optimization levels. To simply *use* an existing corpus from your
+or optimization levels. To simply *use* existing signatures from your
 disassembler, see [README.md](README.md).
 
 ## Pipeline overview
@@ -23,7 +23,7 @@ artifacts/                       (ar x)                       (SightHouseAnalyze
                                                               signatures/*.xml
 ```
 
-## Library corpus
+## Libraries
 
 Sourced from SCA-Benchmark's `libraries.json` (30 libraries, all pinned to a
 specific version). `rapidjson` is header-only and therefore excluded — 29
@@ -31,8 +31,8 @@ libraries remain.
 
 Each library is built as a static archive (`.a`) for **x86_64** and **arm64**
 by [SCA-Benchmark/scripts/builder.py](https://github.com/moonkick64/SCA-Benchmark/blob/main/scripts/builder.py).
-The build flags are `-g -O0` by default; to build a second optimization corpus
-(e.g. `-O2`), edit `OPT_FLAGS` in `builder.py`, rebuild, and re-run
+The build flags are `-g -O0` by default; to build signatures at a second
+optimization level (e.g. `-O2`), edit `OPT_FLAGS` in `builder.py`, rebuild, and re-run
 `ingest.py --opt-level O2` (see **Multiple optimization levels** below).
 
 ## Prerequisites
@@ -103,7 +103,7 @@ Per library × arch, `ingest.py` does:
 
 The same library compiled with different `-O` flags produces different machine
 code and therefore different BSim signatures. `ingest.py` tags each ingest with
-an optimization level so multiple opt-level corpora can coexist in one DB.
+an optimization level so signatures for multiple opt levels can coexist in one DB.
 
 ```bash
 # Default: tag as -O0 (suffix omitted for backward compatibility).
@@ -123,7 +123,7 @@ the per-(lib,arch) Ghidra project dir under `work/projects/`):
 | `O2`          | `zlib@1.3.1-x86_64-O2`        | `signatures/zlib_1.3.1-x86_64-O2/`|
 | `O3` / `Os` / `Oz` | `…-O3` / `…-Os` / `…-Oz` | analogous                         |
 
-The `-O0` corpus keeps the historical empty suffix so the original ~5.5k-exe
+The `-O0` signatures keep the historical empty suffix so the original ~5.5k-exe
 release stays addressable under its original name. Any non-O0 level gets an
 explicit `-O<n>` tail. The artifacts directory itself is **not** suffixed —
 `ingest.py` reads from `SCA-Benchmark/artifacts/<arch>/<lib>/lib/*.a`
@@ -159,7 +159,7 @@ docker exec bsim-foundry-ghidra /ghidra/support/bsim \
 
 # Incremental: only dump exes whose metadata ends in -O<n> (i.e. anything
 # but the default -O0 suffix) and merge into the existing signatures/ tree.
-# Useful after adding a second optimization corpus without re-dumping the
+# Useful after adding second-optimization-level signatures without re-dumping the
 # multi-hour -O0 baseline.
 ./scripts/dump-signatures.sh --only-non-o0
 ```
@@ -168,7 +168,7 @@ Outputs live under `signatures/<lib>_<ver>-<arch>[-O<n>]/sigs_<md5>`.
 
 ## Package and publish a Release
 
-The `signatures/` corpus (~380 MB raw, ~60 MB gzipped, 10k+ files) is **not**
+The `signatures/` tree (~380 MB raw, ~60 MB gzipped, 10k+ files) is **not**
 tracked in git — it is generated, large, and changes wholesale on every
 re-dump, which would bloat git history. Ship it as a **GitHub Release asset**:
 
@@ -178,7 +178,7 @@ re-dump, which would bloat git history. Ship it as a **GitHub Release asset**:
 
 # Publish (requires gh + push access)
 gh release create v1.1.0 signatures-v1.1.0.tar.gz \
-  -t 'BSim-foundry v1.1.0' -n 'O0 + O2 corpus, x86_64 + arm64'
+  -t 'BSim-foundry v1.1.0' -n 'O0 + O2 signatures, x86_64 + arm64'
 ```
 
 ## Notes / known limitations

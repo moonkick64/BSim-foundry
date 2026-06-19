@@ -1,6 +1,6 @@
 # BSim-foundry
 
-An experiment in building a binary similarity signature corpus for common OSS
+An experiment in building binary similarity signatures for common OSS
 C/C++ libraries, using [Quarkslab/SightHouse](https://github.com/quarkslab/sighthouse)
 and Ghidra's **BSim (Binary Similarity)** engine.
 
@@ -48,12 +48,12 @@ MODE=rename ./scripts/identify.sh ./suspect.bin  # auto-rename + evidence commen
 See **[USAGE.md](USAGE.md)** for all three paths, threshold tuning, and how to
 read the results.
 
-> ⚠️ This is a **signature-only** corpus, so Ghidra's native **Apply Name /
+> ⚠️ These are **signature-only** (no source programs kept), so Ghidra's native **Apply Name /
 > Apply Signature** buttons error out (they need the matched source program,
 > which isn't stored). Use the GUI for search/identification only, or the
 > `BSimRename` script / SightHouse plugin to apply names. See USAGE.md.
 
-## Building / extending the corpus
+## Building / extending the signatures
 
 To add libraries, architectures, or optimization levels — or to rebuild from
 scratch — see [BUILDING.md](BUILDING.md).

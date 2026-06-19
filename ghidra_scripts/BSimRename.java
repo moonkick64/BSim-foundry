@@ -1,10 +1,10 @@
 /* Rename a binary's functions to their library names using the BSim-foundry
  * signature DB. For each function in currentProgram, queries the BSim server for the
- * closest corpus function and, when the match is confident enough, renames the function
+ * closest matching library function and, when the match is confident enough, renames the function
  * and leaves an evidence plate comment + a "BSim" bookmark.
  *
- * This is the headless answer to a limitation of Ghidra's native BSim UI: because this
- * corpus is signature-only (the source programs are discarded during ingest), the GUI
+ * This is the headless answer to a limitation of Ghidra's native BSim UI: because these
+ * signatures keep no source programs (discarded during ingest), the GUI
  * "Apply Name / Apply Signature" buttons error out — they need the matched program to be
  * reachable. This script instead applies the name that BSim already stores, so no source
  * program is required. (Full prototype / data-type recovery is still out of scope.)

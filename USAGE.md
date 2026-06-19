@@ -1,7 +1,7 @@
 # Using the signatures
 
-This document covers how to **use** an existing BSim-foundry corpus to detect
-OSS library functions in an unknown binary. To *build or extend* the corpus, see
+This document covers how to **use** existing BSim-foundry signatures to detect
+OSS library functions in an unknown binary. To *build or extend* the signatures, see
 [BUILDING.md](BUILDING.md); to get the database populated in the first place, see the
 **Quick start** in [README.md](README.md).
 
@@ -9,18 +9,18 @@ Everything below assumes `bsim_postgres` is already populated (`./scripts/bootst
 `./scripts/restore-signatures.sh`) and reachable at
 `postgresql://user@localhost:5432/bsim`.
 
-## What the corpus can and cannot do
+## What the signatures can and cannot do
 
-- **Can**: identify which corpus libraries a binary embeds, and name individual functions
+- **Can**: identify which covered libraries a binary embeds, and name individual functions
   (e.g. a stripped `FUN_0010abcd` → `inflate_fast` from `zlib@1.3.1-x86_64`). Works on
   stripped, statically-linked, real-world binaries, and tolerates minor version / `-O`
   differences (matching is on decompiled structure, not names).
-- **Cannot**: recover full C prototypes / data types. This is a **signature-only** corpus
+- **Cannot**: recover full C prototypes / data types. These are **signature-only**
   — the source programs are discarded during ingest — so only the function *name* and
   library label are stored.
 
-> ⚠️ **Ghidra's native "Apply Name / Apply Signature" buttons do not work** with this
-> corpus. They try to open the matched *source program* to copy its prototype, which a
+> ⚠️ **Ghidra's native "Apply Name / Apply Signature" buttons do not work** with these
+> signatures. They try to open the matched *source program* to copy its prototype, which a
 > signature-only database does not contain, so they error out. Use the GUI for
 > **search / identification only**, or use the headless `BSimRename` script below (which
 > applies the stored name without needing a source program), or the SightHouse plugin.

@@ -9,7 +9,7 @@
 # bootstrap.sh + ingest.py recreate everything here.
 /work/
 
-# Generated signature corpus — distributed via GitHub Releases, not git.
+# Generated signatures — distributed via GitHub Releases, not git.
 # Regenerate with ./scripts/dump-signatures.sh, package with
 # ./scripts/package-signatures.sh.
 /signatures/

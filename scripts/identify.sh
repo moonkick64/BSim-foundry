@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Identify (and optionally rename) the corpus libraries embedded in a target binary,
+# Identify (and optionally rename) the covered libraries embedded in a target binary,
 # using your *local* Ghidra against the restored BSim database.
 #
 # Unlike the build pipeline (which runs Ghidra inside the bsim-foundry-ghidra container),

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Package signatures/ into a gzipped tarball for distribution as a GitHub
-# Release asset. The signature corpus is intentionally kept out of git (see
+# Release asset. The signatures are intentionally kept out of git (see
 # .gitignore) because it is large, generated, and changes wholesale on every
 # re-dump — committing it would bloat history unboundedly.
 #
@@ -26,7 +26,7 @@ fi
 
 n_dirs=$(find signatures -mindepth 1 -maxdepth 1 -type d | wc -l)
 n_files=$(find signatures -type f | wc -l)
-echo "Packaging $n_dirs corpus dirs / $n_files signature files -> $out"
+echo "Packaging $n_dirs signature dirs / $n_files signature files -> $out"
 
 tar czf "$out" signatures
 

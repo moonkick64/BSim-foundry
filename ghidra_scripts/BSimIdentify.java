@@ -1,4 +1,4 @@
-/* Identify which corpus libraries a binary embeds, using the BSim-foundry
+/* Identify which covered libraries a binary embeds, using the BSim-foundry
  * signature DB. Read-only: queries every function in currentProgram against the BSim
  * server and prints a per-function best match plus a significance-weighted, per-library
  * rollup. Nothing in the program is modified.
