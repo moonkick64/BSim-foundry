@@ -1,7 +1,7 @@
 # External dependencies (cloned by bootstrap)
 /sighthouse/
 
-# Docker runtime data (BSIM postgres)
+# Docker runtime data (BSim postgres)
 /data/
 
 # Work tree — entirely scratch/regenerated (extracted .o, ghidra projects,

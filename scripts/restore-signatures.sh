@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Load signatures/*.xml back into a fresh bsim_postgres.
-# Assumes bootstrap.sh has already created an empty BSIM database.
+# Assumes bootstrap.sh has already created an empty BSim database.
 set -euo pipefail
 
 ROOT="$(cd -- "$(dirname -- "$0")/.." >/dev/null 2>&1 && pwd)"

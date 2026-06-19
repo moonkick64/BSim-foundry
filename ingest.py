@@ -4,7 +4,7 @@ BSim-foundry ingestion script.
 
 For each (library, arch), extracts .o files from the static archive built by
 SCA-Benchmark/scripts/builder.py, then runs Ghidra headless inside the
-bsim-foundry-ghidra container with SightHouseAnalyzerScript to push BSIM
+bsim-foundry-ghidra container with SightHouseAnalyzerScript to push BSim
 signatures into the bsim_postgres container.
 """
 
@@ -70,7 +70,7 @@ OPT_LEVELS = ["O0", "O1", "O2", "O3", "Os", "Oz"]
 
 
 def opt_suffix(opt: str) -> str:
-    """Suffix appended to the BSIM exe metadata / project dir.
+    """Suffix appended to the BSim exe metadata / project dir.
 
     O0 keeps the historical empty suffix so the existing -O0 corpus stays
     addressable as e.g. `zlib@1.3.1-x86_64`. Other opt levels get an explicit
@@ -240,7 +240,7 @@ def main():
                    choices=ARCHES, help="ingest only the given arch")
     p.add_argument("--opt-level", default="O0", choices=OPT_LEVELS,
                    help="Optimization level the artifacts/ was built with "
-                        "(only affects BSIM metadata tag, not the build itself). "
+                        "(only affects BSim metadata tag, not the build itself). "
                         "O0 keeps the historical empty suffix.")
     p.add_argument("--list", action="store_true",
                    help="list available libraries and exit")
@@ -256,7 +256,7 @@ def main():
     opt = args.opt_level
 
     before = get_exe_count()
-    print(f"BSIM DB exe count before: {before}")
+    print(f"BSim DB exe count before: {before}")
 
     failures = []
     successes = 0
@@ -272,7 +272,7 @@ def main():
                 failures.append(f"{lib}/{arch}/{opt}")
 
     after = get_exe_count()
-    print(f"\nBSIM DB exe count: {before} -> {after} (delta {after - before})")
+    print(f"\nBSim DB exe count: {before} -> {after} (delta {after - before})")
     print(f"Successes: {successes}, Failures: {len(failures)}")
     if failures:
         print("Failed: " + ", ".join(failures))

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Dump BSIM signatures from bsim_postgres into signatures/ as XML files.
-# Each .o file is one BSIM executable, identified by md5; multiple md5s share
+# Dump BSim signatures from bsim_postgres into signatures/ as XML files.
+# Each .o file is one BSim executable, identified by md5; multiple md5s share
 # the same metadata name (e.g. "zlib@1.3.1-x86_64"). Dump per-md5 into a
 # per-(name) directory so restore-signatures.sh can commit each group.
 #

@@ -1,6 +1,6 @@
 # Building / extending the corpus
 
-This document covers how BSim-foundry **produces** the BSIM signature corpus.
+This document covers how BSim-foundry **produces** the BSim signature corpus.
 You only need it to regenerate signatures or to add libraries, architectures,
 or optimization levels. To simply *use* an existing corpus from your
 disassembler, see [README.md](README.md).
@@ -14,7 +14,7 @@ artifacts/                       (ar x)                       (SightHouseAnalyze
                                                                      │
                                                                      ▼
                                                               bsim_postgres
-                                                              (BSIM database)
+                                                              (BSim database)
                                                                      │
                                                                      ▼
                                                               bsim dumpsigs
@@ -92,9 +92,9 @@ python3 ingest.py
 
 Per library × arch, `ingest.py` does:
 1. `ar x` each `.a` from `SCA-Benchmark/artifacts/<arch>/<lib>/lib/`
-2. Writes `config.json` with the BSIM URL and per-library metadata
+2. Writes `config.json` with the BSim URL and per-library metadata
 3. Runs `analyzeHeadless ... -preScript SightHouseAnalyzerScript.class`,
-   which imports each `.o`, decompiles, and inserts BSIM signatures.
+   which imports each `.o`, decompiles, and inserts BSim signatures.
 4. Deletes the per-library Ghidra project and extracted `.o` files (the
    signatures live in postgres now, so the scratch dirs are disposable —
    skipping this step makes a full run easily exceed 30 GB of disk).
@@ -102,7 +102,7 @@ Per library × arch, `ingest.py` does:
 ## Multiple optimization levels
 
 The same library compiled with different `-O` flags produces different machine
-code and therefore different BSIM signatures. `ingest.py` tags each ingest with
+code and therefore different BSim signatures. `ingest.py` tags each ingest with
 an optimization level so multiple opt-level corpora can coexist in one DB.
 
 ```bash
@@ -114,7 +114,7 @@ python3 ingest.py
 python3 ingest.py --opt-level O2
 ```
 
-**Suffix convention** (applied to BSIM exe metadata, per-arch dump dirs, and
+**Suffix convention** (applied to BSim exe metadata, per-arch dump dirs, and
 the per-(lib,arch) Ghidra project dir under `work/projects/`):
 
 | `--opt-level` | metadata tag                  | dump dir                          |
@@ -154,7 +154,7 @@ docker exec bsim-foundry-ghidra /ghidra/support/bsim \
 ## Export signatures
 
 ```bash
-# Full dump: replaces signatures/ with everything currently in the BSIM DB.
+# Full dump: replaces signatures/ with everything currently in the BSim DB.
 ./scripts/dump-signatures.sh
 
 # Incremental: only dump exes whose metadata ends in -O<n> (i.e. anything
@@ -183,16 +183,16 @@ gh release create v1.1.0 signatures-v1.1.0.tar.gz \
 
 ## Notes / known limitations
 
-- **rapidjson** is header-only; no `.a` is produced, so it has no BSIM
+- **rapidjson** is header-only; no `.a` is produced, so it has no BSim
   signatures.
-- Each `.o` file becomes a separate "executable" in BSIM. The library name,
+- Each `.o` file becomes a separate "executable" in BSim. The library name,
   version, arch, and (for non-O0 builds) optimization level are attached as
   the executable's metadata tag (e.g. `zlib@1.3.1-x86_64`,
   `zlib@1.3.1-x86_64-O2`).
 - Functions with fewer than **10 instructions** are filtered out
   (`SightHouseAnalyzerScript` default). To change this, edit the per-library
   `config.json` written by `ingest.py`.
-- BSIM postgres is configured with the **`medium_nosize`** template
+- BSim postgres is configured with the **`medium_nosize`** template
   (multi-arch, ~10M functions capacity).
 - `signatures/` is **only** mounted into the host filesystem, not into the
   ghidra container. `restore-signatures.sh` therefore stages the tree under

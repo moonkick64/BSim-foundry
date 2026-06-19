@@ -2,10 +2,10 @@
 
 An experiment in building a binary similarity signature corpus for common OSS
 C/C++ libraries, using [Quarkslab/SightHouse](https://github.com/quarkslab/sighthouse)
-and Ghidra's **BSIM (Binary SIMilarity)** engine.
+and Ghidra's **BSim (Binary Similarity)** engine.
 
 Libraries are built from [SCA-Benchmark](https://github.com/moonkick64/SCA-Benchmark)
-and ingested into a Ghidra BSIM database through SightHouse's analyzer pipeline.
+and ingested into a Ghidra BSim database through SightHouse's analyzer pipeline.
 The output is a labelled signature DB and its XML dump (distributed via GitHub
 Releases).
 
@@ -16,7 +16,7 @@ Releases).
 | Libraries                     | 29 (zlib, openssl, mbedtls, sqlite, libcurl, …) |
 | Architectures                 | x86_64, arm64                                    |
 | Optimization                  | `-O0`, `-O2`                                      |
-| BSIM executables (`.o` units) | 10,832                                           |
+| BSim executables (`.o` units) | 10,832                                           |
 | Signed functions              | 257,724                                          |
 
 Each function is labelled `<library>@<version>-<arch>[-O<level>]` — for example,
@@ -25,7 +25,7 @@ Each function is labelled `<library>@<version>-<arch>[-O<level>]` — for exampl
 ## Quick start
 
 ```bash
-# 1. Bring up the BSIM database
+# 1. Bring up the BSim database
 ./scripts/bootstrap.sh
 
 # 2. Fetch the signatures from a Release and load them
